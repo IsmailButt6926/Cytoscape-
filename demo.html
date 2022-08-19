@@ -1,0 +1,555 @@
+<!DOCTYPE>
+
+<html>
+
+<head>
+  <title>cytoscape-edgehandles.js demo</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1">
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+
+
+  <script src="https://unpkg.com/cytoscape/dist/cytoscape.min.js"></script>
+
+  <!-- for testing with local version of cytoscape.js -->
+  <!--<script src="../cytoscape.js/build/cytoscape.js"></script>-->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.10/lodash.js"></script>
+  <script src="cytoscape-edgehandles.js"></script>
+
+  <!-- for popper handles -->
+  <script src="https://unpkg.com/@popperjs/core@2"></script>
+  <script src="https://unpkg.com/cytoscape-popper@2.0.0/cytoscape-popper.js"></script>
+
+  <style>
+    body {
+      font-family: helvetica neue, helvetica, liberation sans, arial, sans-serif;
+      font-size: 10px;
+    }
+
+
+
+    #cy {
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      right: 0;
+      z-index: 999;
+    }
+
+    h1 {
+      opacity: 1;
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    #buttons {
+      position: absolute;
+      right: 0;
+      top: 0;
+      z-index: 99999;
+      margin: 1em;
+    }
+
+    .popper-handle {
+      width: 20px;
+      height: 20px;
+      background: red;
+      border-radius: 20px;
+      z-index: 9999;
+    }
+
+    .btn {
+      background-color: #555555;
+      font-size: 16px;
+    }
+  </style>
+
+  <script>
+
+
+    document.addEventListener('DOMContentLoaded', function () {
+
+      var cy = window.cy = cytoscape({
+        container: document.getElementById('cy'),
+
+        layout: {
+          name: 'grid',
+          rows: 2,
+          cols: 2
+
+        },
+
+        style: [
+          {
+            selector: '.jaf',
+            style: {
+              'content': 'data(name)',
+              "background-color": "#CD5C5C",
+              "background-image": "img/1.jpg",
+              "background-width": ["34px", "30px", "20px"],
+              "background-height": ["34px", "20px", "20px"],
+            }
+          },
+          {
+            selector: '.emi',
+            style: {
+              'content': 'data(name)',
+              "background-color": "#CD5C5C",
+              "background-image": ['https://js.cytoscape.org/img/cytoscape-logo.svg'],
+              "background-width": ["34px", "30px", "20px"],
+              "background-height": ["34px", "20px", "20px"],
+            }
+          },
+          // {
+          //   selector: '.ghu',
+          //   style: {
+          //     'content': 'data(name)',
+          //     "background-color": "#CD5C5C",
+          //     "background-image": ['https://upload.wikimedia.org/wikipedia/commons/6/6d/Windows_Settings_app_icon.png'],
+          //     "background-width": ["34px", "30px", "20px"],
+          //     "background-height": ["34px", "20px", "20px"],
+          //   }
+          // },
+          {
+            selector: '.ghu',
+            style: {
+              'content': 'data(name)',
+              "background-color": "#CD5C5C",
+              "background-image": "img/5.png",
+              "background-width": ["34px", "30px", "20px"],
+              "background-height": ["34px", "20px", "20px"],
+            }
+          },
+          {
+            selector: '.kam',
+            style: {
+              'content': 'data(name)',
+              "background-color": "#CD5C5C",
+              "background-image": "img/3.png",
+              "background-width": ["34px", "30px", "20px"],
+              "background-height": ["34px", "20px", "20px"],
+            }
+          },
+
+          {
+            selector: '.al',
+            style: {
+              'content': 'data(name)',
+              "background-color": "#CD5C5C",
+              "background-image": "img/4.png",
+              "background-width": ["34px", "30px", "20px"],
+              "background-height": ["34px", "20px", "20px"],
+            }
+          },
+
+
+
+
+
+
+
+          // {
+          //   selector: 'node[name]',
+          //   style: {
+          //     'content': 'data(name)',
+          //     "background-color": "#CD5C5C",
+          //     "background-image": ['https://js.cytoscape.org/img/cytoscape-logo.svg'],
+
+          //     // "background-image": "img/1.jpg",
+          //     "background-width": ["34px", "30px", "20px"],
+          //     "background-height": ["34px", "20px", "20px"],
+
+
+          //   }
+          // },
+
+          // {
+          //   selector: 'node[name]',
+          //   style: {
+          //     'content': 'data(name)',
+          //     "background-color": "#CD5C5C",
+          //     "background-image": ['https://upload.wikimedia.org/wikipedia/commons/6/6d/Windows_Settings_app_icon.png'],
+
+          //     // "background-image": "img/1.jpg",
+          //     "background-width": ["34px", "30px", "20px"],
+          //     "background-height": ["34px", "20px", "20px"],
+
+
+          //   }
+          // },
+
+          // {
+
+
+          //   selector: 'node',
+          //   style: {
+          //     'label': 'data(id: j, name: Jaffar)',
+          //     'content': 'data( )',
+          //     "background-color": "#CD5C5C",
+          //     "background-image": "img/1.jpg",
+          //     "background-width": ["34px", "30px", "20px"],
+          //     "background-height": ["34px", "20px", "20px"],
+          //   }
+          // },
+          // {
+
+
+          //   selector: 'node[Emir]',
+          //   style: {
+          //     'content': 'data( id: e)',
+          //     "background-color": "#CD5C5C",
+          //     "background-image": "img/pngegg.png",
+          //     "background-width": ["34px", "30px", "20px"],
+          //     "background-height": ["34px", "20px", "20px"],
+          //   }
+          // },
+
+
+
+          {
+
+            selector: 'edge',
+            style: {
+              'curve-style': 'bezier',
+              'target-arrow-shape': 'triangle',
+              'line-color': '#DDA0DD',
+              'target-arrow-color': '#483D8B',
+
+
+            }
+          },
+
+          // some style for the extension
+
+          {
+            selector: '.eh-handle',
+            style: {
+              'background-color': 'red',
+              'width': 12,
+              'height': 12,
+              'shape': 'ellipse',
+              'overlay-opacity': 0,
+              'border-width': 12, // makes the handle easier to hit
+              'border-opacity': 0
+            }
+          },
+
+          {
+            selector: '.eh-hover',
+            style: {
+              'background-color': 'red'
+            }
+          },
+
+          {
+            selector: '.eh-source',
+            style: {
+              'border-width': 2,
+              'border-color': 'red'
+            }
+          },
+
+          {
+            selector: '.eh-target',
+            style: {
+              'border-width': 2,
+              'border-color': 'black'
+            }
+          },
+
+
+          {
+            selector: '.eh-preview, .eh-ghost-edge',
+            style: {
+              'background-color': 'black',
+              'line-color': 'black',
+              'target-arrow-color': 'black',
+              'source-arrow-color': 'black'
+            }
+          },
+          {
+            selector: "edge.visible",
+            style: {
+              "visibility": "visible",
+            }
+          },
+
+
+          {
+            selector: '.eh-ghost-edge.eh-preview-active',
+            style: {
+              'opacity': 0
+            }
+          }
+        ],
+
+        elements: {
+          nodes: [
+            { data: { id: 'j', name: 'Jaffar', weight: 75 }, classes: 'jaf' },
+            { data: { id: 'e', name: 'Emir', weight: 75 }, classes: 'emi' },
+            { data: { id: 'k', name: 'Kamil', weight: 75 }, classes: 'kam' },
+            { data: { id: 'g', name: 'Ghufran', weight: 75 }, classes: 'ghu' }
+          ],
+          edges: [
+            { data: { source: 'j', target: 'k' } },
+            { data: { source: 'j', target: 'g' } },
+            { data: { source: 'e', target: 'j' } },
+            { data: { source: 'e', target: 'k' } },
+            { data: { source: 'e', target: 'g' } },
+            { data: { source: 'k', target: 'g' } },
+
+          ]
+        }
+
+
+      });
+
+      //if you want to add a single node
+      // cy.add({
+      //   group: 'nodes',
+      //   data: { weight: 75, name: "hi", id: "a" ,source:"a", },
+      //   position: { x: 200, y: 200 },
+      // }).style({
+      //   'background-color': '#CD5C5C'
+      // })
+
+
+      var eles = cy.add([
+        { group: 'nodes', data: { id: 'n0', name: "ali", weight: 75 }, classes: "al", position: { x: 100, y: 100 } },
+        { group: 'edges', data: { id: 'e0', source: 'n0', target: 'j' } },
+        { group: 'edges', data: { id: 'e1', source: 'n0', target: 'k' } },
+      ]);
+
+
+      // for drawing edgehandles through nodes
+      var eh = cy.edgehandles();
+
+      // for drawing edges by clicking button
+      document.querySelector('#draw-on').addEventListener('click', function () {
+        eh.enableDrawMode();
+      });
+
+      // Sntax of adding event from nodes--- cy.on('tap', 'node', function(evt){
+      //   console.log( 'tapped ' + node.id() );
+      // });
+
+      // cy.on('dblclick', 'node', function (evt) {
+      //   var node = evt.target;
+      //   console.log('tapped ' + node.id());
+      //   eh.enableDrawMode();
+      // });
+      // eh.enableDrawMode();
+
+      //for disabling edges by clicking button
+      // document.querySelector('#draw-off').addEventListener('click', function () {
+      //   eh.disableDrawMode();
+      // });
+
+      // document.querySelector('#start').addEventListener('click', function () {
+      //   eh.start(cy.$('node:selected'));
+      // });
+
+      // for add node
+      document.querySelector("#c1").addEventListener('click', function () {
+        
+        cy.add({
+          group: 'nodes',
+          data: { },
+          position: { x: 200, y: 200 }
+        }).css({
+          'background-color': 'red'
+        });
+      })
+      
+
+
+      //for delete specific node 
+      // document.querySelector("#del").addEventListener("dblclick", function () {
+      //   cy.remove("#e");
+      // })
+
+
+      //for deleting node whose weight is greater the 50
+      document.getElementById("del").addEventListener("dblclick", function () {
+        var collection = cy.elements('node[weight > 50]');
+        cy.remove(collection);
+
+      })
+
+
+
+
+
+
+
+      var popperEnabled = false;
+
+      document.querySelector('#popper').addEventListener('click', function () {
+        if (popperEnabled) { return; }
+
+        popperEnabled = true;
+
+        // example code for making your own handles -- customise events and presentation where fitting
+        var popper;
+
+        var popperNode;
+        var popper;
+        var popperDiv;
+        var started = false;
+
+        function start() {
+          eh.start(popperNode);
+        }
+
+        function stop() {
+          eh.stop();
+        }
+
+        function setHandleOn(node) {
+          if (started) { return; }
+
+          removeHandle(); // rm old handle
+
+          popperNode = node;
+
+          popperDiv = document.createElement('div');
+          popperDiv.classList.add('popper-handle');
+          popperDiv.addEventListener('mousedown', start);
+          document.body.appendChild(popperDiv);
+
+          popper = node.popper({
+            content: popperDiv,
+            popper: {
+              placement: 'top',
+              modifiers: [
+                {
+                  name: 'offset',
+                  options: {
+                    offset: [0, -10],
+                  },
+                },
+              ]
+            }
+          });
+        }
+
+        function removeHandle() {
+          if (popper) {
+            popper.destroy();
+            popper = null;
+          }
+
+          if (popperDiv) {
+            document.body.removeChild(popperDiv);
+            popperDiv = null;
+          }
+
+          popperNode = null;
+        }
+
+        cy.on('mouseover', 'node', function (e) {
+          setHandleOn(e.target);
+        });
+
+        cy.on('grab', 'node', function () {
+          removeHandle();
+        });
+
+        cy.on('tap', function (e) {
+          if (e.target === cy) {
+            removeHandle();
+          }
+        });
+
+        cy.on('zoom pan', function () {
+          removeHandle();
+        });
+
+        window.addEventListener('mouseup', function (e) {
+          stop();
+        });
+
+        cy.on('ehstart', function () {
+          started = true;
+        });
+
+        cy.on('ehstop', function () {
+          started = false;
+        });
+      });
+
+    });
+
+  </script>
+</head>
+
+<body>
+
+  <h1>cytoscape-edgehandles</h1>
+
+  <div id="cy"></div>
+
+  <div id="buttons">
+    <!-- <button id="start" class="btn">Start on selected</button> -->
+    <button id="draw-on" class="btn  btn-info btn-sm  mx-3">Draw </button>
+    <!-- <button id="draw-off" class="btn">Draw off</button> -->
+    <button id="popper" class="btn btn-info btn-sm">Use custom popper handles</button>
+    <button id="add" class="btn btn-info btn-sm mx-5" data-toggle="modal" data-target="#myModal">Clicked me</button>
+
+    <div class="modal fade" id="myModal" role="dialog">
+      <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+
+          <div class="modal-header">
+            <h4 class="modal-title">Nodes</h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+
+
+
+          <div class="modal-body">
+            <button type="button" class="btn btn-dark" id="c1">Add node</button>
+          </div>
+
+
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" id="c1" data-dismiss="modal">Close</button>
+          </div>
+
+        </div>
+
+
+
+
+
+
+
+      </div>
+
+
+    </div>
+  <button id="del" class="btn btn-info btn-sm mx-3">Delete node</button>
+
+
+  </div>
+
+  </div>
+</body>
+
+</html>
